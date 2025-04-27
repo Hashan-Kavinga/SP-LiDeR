@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="simultaneous reconstruction of Depth and Reflectivity using single photon LiDAR measurements.">
+  <meta name="keywords" content="Single-photon LiDAR, Depth, Reflectivity, Reconstruction">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joint Depth and Reflectivity Estimation using Single Photon LiDAR</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span style="color:#B9770E; font-weight: bold; font-style: italic">SP-LiDeR</span>
+             <br> <!-- 换行 -->
+                Joint Depth and Reflectivity Estimation using Single Photon LiDAR
+                 </h1>
+          <div class="is-size-5 publication-authors">
+            <div class="author-row">
+              <span class="author-block">
+                <a href="https://hashan-kavinga.github.io/index.html">Hashan K. Weerasooriya</a>,</span>
+              <span class="author-block">
+                <a href="https://github.com/chennuriprateek">Prateek Chennuri</a>,</span>
+              <span class="author-block">
+                <a href="https://wjzhang5464.github.io/">Weijian Zhang</a>,</span>
+              <span class="author-block">
+                <a href="https://eng.ed.ac.uk/about/people/dr-istvan-gyongy">Istvan Gyongy</a>,</span>
+              <span class="author-block">
+                <a href="https://engineering.purdue.edu/ChanGroup/stanleychan.html">Stanley Chan</a></span>
+            </div>
+          </div>
+
+          <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block"></sup>Purdue University</span>
+          </div> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="./static/doc/CVPR_Paper_2025.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="./static/doc/CVPR_Paper_2025_supp.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Supplementary</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(coming)</span>
+                  </a>
+              </span>
+            </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section>
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <br>
+        <br>
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Single-Photon Light Detection and Ranging (SP-LiDAR) is emerging as a leading technology for long-range, 
+            high-precision 3D vision tasks. In SP-LiDAR, timestamps encode two complementary pieces of information: 
+            pulse travel time (depth) and the number of photons reflected by the object (reflectivity). Existing SP-LiDAR 
+            reconstruction methods typically recover depth and reflectivity separately, rely on one modality to estimate the other, 
+            or reconstruct only a single modality. Moreover, the conventional 3D histogram construction is effective 
+            mainly for slow-moving or stationary scenes. In dynamic scenes, however, it is more efficient and effective to directly process 
+            the timestamps. In this paper, we introduce an estimation method to simultaneously recover both depth and reflectivity 
+            in fast-moving scenes. We offer two contributions (1) A theoretical analysis demonstrating the mutual correlation between depth and 
+            reflectivity and the conditions under which joint estimation becomes beneficial. (2) A novel reconstruction method, ``SP-LiDeR'', 
+            which exploits the shared information to enhance signal recovery.
+          </p>
+        </div>
+        <div class="image-container">
+          <figure>
+            <img src="./static/images/abstract.png" alt="SP-LiDAR Framework" style="width: 100%; max-width: 1000px; height: auto;">
+            <figcaption style="text-align: justify;">
+              Different Processing Methods of Timestamp Data and the Corresponding Results: 
+              (a) A SPAD sensor array captures noisy timestamp data from a dynamic scene at high speed. 
+              (b) To mitigate noise in the raw data, conventional approaches cluster multiple detections to form a 3D cube; 
+              the object's reflectivity and depth are then estimated by locating the peak's height and position using algorithms such as maximum likelihood estimation. 
+              (c) We propose SP-LiDeR, a deep learning framework that directly leverages individual timestamp frames. 
+              (d) Conventional algorithms often suffer from blurry results due to long integration times. 
+              (e) In contrast, our proposed method achieves more accurate and sharper reconstructions of dynamic scenes.
+            </figcaption>
+          </figure>        
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Goals</h2>
+        <div class="content has-text-justified">
+          <p>The goal of this paper is to explore the benefit of simultaneous estimation of depth and reflectivity. To this end, we aim to answer two questions:</p>
+          <ol>
+              <li>
+                  <b><i>Does recovering depth help recover reflectivity, and vice versa?</i></b>
+                  <br>Does recovering depth help recover reflectivity, and vice versa? To address this, we derive the Maximum-Likelihood Estimator (MLE) 
+                  for the joint recovery problem and analyze the Cramer–Rao Lower Bound (CRLB) to theoretically establish conditions where information 
+                  sharing is beneficial. This forms the foundation for joint estimation
+              </li>
+              <li>
+                  <b><i>Can we build an efficient neural network to jointly recover depth and reflectivity, for fast-moving scenes?</i></b>
+                  <br>Building on our theoretical and experimental insights, We propose SP-LiDeR, a dual-channel joint estimation network with a feature-sharing mechanism. 
+                  To address information loss from scarce photon detections, we align features from neighboring timestamp frames using optical flow. Our method extracts 
+                  multiscale features for depth and reflectivity through two parallel branches, enhancing each modality and capturing both fine and coarse details for 
+                  improved performance.
+              </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">What is SP-LiDAR?</h2>
+        <article class="content has-text-justified">
+          <p>
+            SP-LiDAR stands for Single-Photon Light Detection and Ranging. Unlike conventional systems, it is an advanced LiDAR technology that uses 
+            single-photon avalanche diodes (SPADs) to detect and measure distances and reflectivity based on the time of flight of individual photons. 
+            SP-LiDAR systems are particularly advantageous because of their extreme sensitivity and ability to operate with very low levels of light, 
+            making them well-suited for scenarios like long-range sensing and high-speed dynamic scenes.
+          </p>
+
+          <div class="image-container" style="display: flex; gap: 10px; justify-content: center;">
+            <figure style="margin: 0; text-align: center;">
+              <img src="./static/images/sp_lidar_imaging-2.png" alt="SP-LiDAR Framework" style="width: 100%; max-width: 600px; height: auto;">
+              <figcaption>Typical Arrangement of a LiDAR Setup. </figcaption>
+            </figure>
+            <!-- <figure style="margin: 0; text-align: center;">
+              <video controls style="width: 100%; max-width: 600px; height: auto;">
+                <source src="./static/videos/sp_lidar.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>SP-LiDAR Framework</figcaption>
+            </figure> -->
+            <figure style="margin: 0; text-align: center;">
+              <img src="./static/images/optical_setup.png" alt="SP-LiDAR Framework" style="width: 100%; max-width: 600px; height: auto;">
+              <figcaption>SP-LiDAR Optical Setup.</figcaption>
+            </figure>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Method. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <article class="content has-text-justified">
+          <p>
+            In our study, SP-LiDeR (Single-Photon LiDAR Restoration) builds on SP-LiDAR by leveraging dual-channel joint estimation to 
+            recover both depth and reflectivity of dynamic scenes simultaneously. By integrating motion field estimation, quanta data restoration, and feature sharing, 
+            SP-LiDeR enhances SP-LiDAR’s performance in dynamic and noisy environments, making it suitable for fast-moving scenes. By shifting from 
+            histogram-based processing to timestamp-based estimation, our method provides a more efficient and accurate solution for simultaneous 
+            depth and reflectivity estimation.</p>
+          <div class="image-container center-content">
+            <figure>
+              <img src="./static/images/overall_network.png" style="width: 100%; max-width: 10000px; height: auto;">
+              <figcaption style="text-align: justify;">
+                The SP-LiDeR Network Architecture. The proposed SP-LiDeR network consists of four main components. This network produces multiscale 
+                reconstructions for both depth and reflectivity simultaneously. PMSR - Progressive Multi-Scale Reconstruction, 
+                STAR - Spatio-Temporal Alignment with Residual Refinement, IBFE - Iterative Multi-Scale Bi-directional Flow Estimation, 
+                CCAM - Convolutional Cross Attention Module.
+              </figcaption>
+            </figure>
+          </div>
+          <!-- <p>
+            We introduce an <strong>Attention Module : CCAM</strong> that fuses depth and reflectivity features.
+            This module learns to emphasize important information from both modalities, improving overall estimation accuracy and robustness.
+          </p>
+
+          <div class="image-row">
+            <figure class="image-two-thirds">
+              <img class="image-1" src="./static/images/overall_ccam.png" alt="Cross-Modality Attention Module">
+              <figcaption>Cross-Modality Attention Module</figcaption>
+            </figure>
+          
+            <figure class="image-one-third">
+              <img class="image-2" src="./static/images/CCAM.png" alt="Second Image">
+              <figcaption>Second Image Description</figcaption>
+            </figure>
+          </div> -->
+        </article>
+      </div>
+    </div>
+    <!--/ Method. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+
+          <h4 class="title is-5">Comparison with other SP-LiDAR Algorithms</h4>
+
+          <div class="table-container" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: center; border: none;">
+              <tr>
+                <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">Timestamp Data</th>
+                <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">BRINN</th>
+                <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">DDFN</th>
+                <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">SPSDF</th>
+                <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">Ours</th>
+              </tr>
+              <tr>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/depth/scene_01_timetamp.gif" alt="Ground Truth - Scene 02" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/BRINN/scene_01.gif" alt="Ground Truth - Scene 03" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/DDFN/scene_01.gif" alt="Ground Truth - Scene 04" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/SPSDF/scene_01.gif" alt="Ground Truth - Scene 05" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/depth/scene_06.gif" alt="Ground Truth - Scene 06" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+              </tr>
+              <tr>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/reflectivity/scene_07_binary.gif" alt="AnimateDiff" class="gif-image"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/BRINN/Ref Outputs/scene_01.gif" alt="AnimateDiff" class="gif-image"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="" alt="AnimateDiff" class="gif-image"> </td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="" alt="SD3" class="gif-image"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/reflectvity/scene_06_binary.gif" alt="SD3" class="gif-image"></td>
+              </tr>
+              <tr>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/depth/scene_02_timetamp.gif" alt="Ground Truth - Scene 02" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/BRINN/scene_02.gif" alt="FLUX" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/DDFN/scene_02.gif" alt="FLUX" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/SPSDF/scene_02.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/depth/scene_07.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+              </tr>
+              <tr>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/reflectivity/scene_06_binary.gif" alt="AnimateDiff" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Depth Comparisons/BRINN/Ref Outputs/scene_02.gif" alt="AnimateDiff" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="" alt="AnimateDiff" class="gif-image"> </td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="" alt="SD3" class="gif-image"></td>
+                <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/reflectvity/scene_07_binary.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+              </tr>
+            </table>
+          </div>
+
+            <h4 class="title is-5" style="margin-top: 20px;">Comparison with other Video Reconstruction Algorithms</h4>
+            
+
+            <div class="table-container" style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; text-align: center; border: none;">
+                <tr>
+                  <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">Binary Data</th>
+                  <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">RVRT</th>
+                  <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">FlorNN</th>
+                  <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">Quiver</th>
+                  <th style="width: 16.6%; border: none; padding: 0; line-height: 50px;">Ours</th>
+                </tr>
+                <tr>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/reflectivity/scene_02_binary.gif" alt="Ground Truth - Scene 02" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/rvrt/scene_02.gif" alt="FLUX" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/flornn/scene_02.gif" alt="FLUX" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/quiver/scene_02.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/reflectvity/scene_02.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                </tr>
+                <tr>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/reflectivity/scene_03_binary.gif" alt="AnimateDiff" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/rvrt/scene_03.gif" alt="AnimateDiff" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/flornn/scene_03.gif" alt="AnimateDiff" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/quiver/scene_03.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/reflectvity/scene_03.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                </tr>
+                <tr>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/reflectivity/scene_04_binary.gif" alt="CameraCtrl" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/rvrt/scene_04.gif" alt="CameraCtrl" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/flornn/scene_04.gif" alt="CameraCtrl" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/quiver/scene_04.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/reflectvity/scene_04.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                </tr>
+                <tr>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Raw_data/reflectivity/scene_05_binary.gif" alt="Ours" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/rvrt/scene_05.gif" alt="Ours" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/flornn/scene_05.gif" alt="Ours" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Reflectvity Comparisons/quiver/scene_05.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                  <td style="width: 16.6%; border: none; padding: 0; line-height: 0;"><img src="static/videos/Ours/reflectvity/scene_05.gif" alt="SD3" style="width: 100%; max-width: 3000px; height: auto; display: block; margin: 0; padding: 0;"></td>
+                </tr>
+              </table>
+           </div>
+          
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('img.gif-image').forEach(img => {
+    if (!img.getAttribute('src')) {
+      const td = img.parentElement;
+      td.innerHTML = '<div style="width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-size: 14px; color: gray;">Does not estimate</div>';
+    }
+  });
+</script>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified" style="font-size: 0.8em;">
+
+          <ul style="list-style-type: disc; padding-left: 20px;">
+            <li><strong>Author1, Author2</strong>, "Paper Title 1," <em>Conference Name</em>, Year.</li>
+            <li><strong>Author1, Author2</strong>, "Paper Title 2," <em>Journal Name</em>, Year.</li>
+            <li><strong>Author1, Author2</strong>, "Paper Title 3," <em>Conference Name</em>, Year.</li>
+            <li><strong>Author1, Author2</strong>, "Paper Title 4," <em>Journal Name</em>, Year.</li>
+            <!-- Add more papers here as needed -->
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{hashan2025sp-lider,
+    title={Joint Depth and Reflectivity Estimation using Single Photon LiDAR},
+    author={Hashan K. Weerasooriya, Prateek Chennuri, Weijian Zhang, Istvan Gyongy, Stanley Chan},
+    journal={arXiv preprint arXiv},
+    year={2025}
+  }</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer has-background-grey-light">
+  <div class="container">
+    <p class="is-size-7">
+      Built with <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and 
+      <a href="https://pku-yuangroup.github.io/MagicTime/">MagicTime</a> templates
+    </p>
+  </div>
+</footer>
+
+
+</body>
+</html>
