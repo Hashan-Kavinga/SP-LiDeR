@@ -129,13 +129,12 @@
           <p>
             Single-Photon Light Detection and Ranging (SP-LiDAR) is emerging as a leading technology for long-range, 
             high-precision 3D vision tasks. In SP-LiDAR, timestamps encode two complementary pieces of information: 
-            pulse travel time (depth) and the number of photons reflected by the object (reflectivity). Existing SP-LiDAR 
-            reconstruction methods typically recover depth and reflectivity separately, rely on one modality to estimate the other, 
-            or reconstruct only a single modality. Moreover, the conventional 3D histogram construction is effective 
+            pulse travel time (depth) and the number of photons reflected by the object (reflectivity). Existing SP-LiDAR reconstruction methods typically 
+            recover depth and reflectivity separately or sequentially use one modality to estimate the other. Moreover, the conventional 3D histogram construction is effective 
             mainly for slow-moving or stationary scenes. In dynamic scenes, however, it is more efficient and effective to directly process 
             the timestamps. In this paper, we introduce an estimation method to simultaneously recover both depth and reflectivity 
             in fast-moving scenes. We offer two contributions (1) A theoretical analysis demonstrating the mutual correlation between depth and 
-            reflectivity and the conditions under which joint estimation becomes beneficial. (2) A novel reconstruction method, ``SP-LiDeR'', 
+            reflectivity and the conditions under which joint estimation becomes beneficial. (2) A novel reconstruction method, ``SPLiDeR'', 
             which exploits the shared information to enhance signal recovery.
           </p>
         </div>
@@ -147,7 +146,7 @@
               (a) A SPAD sensor array captures noisy timestamp data from a dynamic scene at high speed. 
               (b) To mitigate noise in the raw data, conventional approaches cluster multiple detections to form a 3D cube; 
               the object's reflectivity and depth are then estimated by locating the peak's height and position using algorithms such as maximum likelihood estimation. 
-              (c) We propose SP-LiDeR, a deep learning framework that directly leverages individual timestamp frames. 
+              (c) We propose SPLiDeR, a deep learning framework that directly leverages individual timestamp frames. 
               (d) Conventional algorithms often suffer from blurry results due to long integration times. 
               (e) In contrast, our proposed method achieves more accurate and sharper reconstructions of dynamic scenes.
             </figcaption>
@@ -175,7 +174,7 @@
               </li>
               <li>
                   <b><i>Can we build an efficient neural network to jointly recover depth and reflectivity, for fast-moving scenes?</i></b>
-                  <br>Building on our theoretical and experimental insights, We propose SP-LiDeR, a dual-channel joint estimation network with a feature-sharing mechanism. 
+                  <br>Building on our theoretical and experimental insights, we propose SPLiDeR, a dual-channel joint estimation network with a feature-sharing mechanism. 
                   To address information loss from scarce photon detections, we align features from neighboring timestamp frames using optical flow. Our method extracts 
                   multiscale features for depth and reflectivity through two parallel branches, enhancing each modality and capturing both fine and coarse details for 
                   improved performance.
